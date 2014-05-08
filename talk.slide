@@ -1,0 +1,161 @@
+A Few Patterns
+for Golang
+8 May 2014
+
+Vasko Zdravevski
+vasko.zdravevski@sendgrid.com
+@vaskoz
+
+* Why do we need to talk about Go patterns?
+- They usually embody best practices
+- They usually make things *simpler* to learn and maintain
+- They help with communication of ideas
+- They provide known ways of solving common programming problem
+
+These reasons together enable you develop faster and better.
+
+We need to share and discuss with all developers so that we can take advantage of a large collection of brain power.
+
+* All languages have patterns that restrict the use certain features
+Ruby devs ... think "def method_missing(name, *args, &block)" or monkey-patching (before Ruby 2+ introduced refinements) or instance_eval and its cousins.
+
+Java devs ... think about writing an entire application using nothing but static fields and methods. Or how about using 'synchronized' on numerous methods that call each other instead of using the new java.util.concurrent lock-free data structures.
+
+Javascript devs ... just the book "Javascript: The Good Parts" (smallest book ever)
+
+Just because you CAN do something with a language, doesn't mean you SHOULD.
+
+* Oh! But Go is a new language there aren't any patterns yet
+*Kinda*True*
+
+Go is a new language, but more correctly it's an evolutionary new langauge.
+
+It doesn't provide a single capability that didn't already exist in many other languages. In fact, that is Go's motto -- _small_number_of_orthogonal_language_constructs_
+
+Plus, we've already discovered ways to use Go that are less painful than other ways.
+
+* That being said ...
+This is obviously not a definitive answer to the question "what are good patterns in Golang?", instead this is just a start of a much longer process.
+
+There are numerous people at SendGrid alone that have been programming in Golang for multiples of my experience with the language.
+
+Hopefully, this talk will at least convince others this area of study is worth some of our time.
+
+* Slides vs Code? ... Yeah, let's have both
+Let's look at a real (small, fun) application that we can see some patterns in.
+
+It won't be a mail sending app, or a web app.
+
+Unfortunately :( I wasn't able to completely finish this application in a single night, but I will finish it very soon.
+
+BUT, I do have enough code to demonstrate most of the concepts. :)
+
+* How about building a coffee shop?
+Let's look at some code necessary to build a coffee shop application.
+
+*COFFEE!!!*
+
+These slides and the code used by these slides can be found here:
+
+.link https://github.com/vaskoz/coffee-shop
+
+Slides are built using a go.tool named *Present* that you Gophers probably have seen already.
+
+* What do we need to make a (minimalist) coffee shop?
+Baristas and coffee drinkers are all we need for the purpose of this example. 
+
+Not gonna deal with money (free coffee). 
+
+But will have to deal with a lot of customers and limited baristas, so we'll get into some concurrency/parallelism.
+
+* What should our coffee shop app be able to do?
+- Open the store; allow customers in to place orders
+- Close the store; complete existing customer orders, but don't allow new customers in.
+- Baristas take orders and make them based on time
+
+* Pattern: Code layout
+Advantage: Easy for developers to scan file for relevant information
+
+.code item/item.go
+
+* Pattern: Interfaces
+You'll notice all the code only exports Interfaces. This provides maximum flexibility.
+
+.code item/item.go /STARTIFACE/,/STOPIFACE/
+
+Notice that all exports in packages are interfaces or package functions.
+
+.code item/item.go /STARTNEW/,/STOPNEW/
+
+Virtually all presenters at GopherCon agree with the nebulous idea of "relying on interfaces"
+
+* Pattern: Package Unique Interfaces
+Notice the 'unique' unexported method in the interface. Why's that there?
+
+.code item/item.go /STARTIFACE/,/STOPIFACE/
+
+Learned this from one of the Golang creators at GopherCon 2014.
+
+Guarantees that any type meeting that interface MUST have come from that package.
+
+Why should we want this? Safety. Example: if we provide a collection of possible interfaces to be used to manipulate state of some other type (strategy pattern), we don't want random types that satisfy the interface to be allowed.
+
+Usually this is prevented in a very manual, error prone and verbose way by using interface type assertions to guarantee a certain type.
+
+* Pattern: Hide types that implement interfaces
+.code item/item.go /STARTSTRUCT/,/STOPSTRUCT/
+
+Lowercase the type name of structs that implement interfaces, because the data and behavior should be accessible thru the interface alone.
+
+Exception would be for a POGO (plain old Golang object). Any type that does NOT implement an interface and needs to be shared should be exported.
+
+* Open Question: Why would you write methods on a non-struct type?
+In Go, nearly any *type* (all except Interfaces which are also types) can have methods defined on it, and therefore implement an interface.
+
+I have yet to find a good enough reason to justify using this language capability in applications.
+
+Example given at GopherCon, net/http Handler is a _method_on_a_function_.
+
+* Pattern: Specialization of types should be subpackages
+The package naming convention literally uses URLs.
+
+URLs are designed with a very specific meaning in their construction.
+
+.link http://yahoo.com/sports/baseball/rockies
+goes from yahoo.com -> sports -> baseball -> colorado rockies
+Format of good URL design always goes from general to more specific left -> right
+
+Packages would benefit from such an philosophy too:
+
+.link github.com/vaskoz/coffee-shop/barista/starbucks
+.link github.com/vaskoz/coffee-shop/barista/veteran
+.link github.com/vaskoz/coffee-shop/customer/impatient
+.link github.com/vaskoz/coffee-shop/customer/talkative
+
+* Pattern: Let the type system work for you
+Go is a statically and strongly typed language with garbage collection, so why not leverage all that?
+
+Let the language do the heavy lifting for you.
+
+* Anti-pattern: Passing channels everywhere?
+In the Go language spec, unbuffered channels (channels of size zero) are the recommended way to perform synchronization and ensure the memory consistency necessary to order goroutines by the "happens before" definition.
+
+Although this is a language construct, what happens to the readability and maintainability of the application.
+
+* Learning from standard library code
+Although Go actually recommends reading the standard library as a way to learn the language, as far as Java & Ruby I can speak from experience, rarely is the standard library code a good example of how application code should be written.
+
+The standard library is usually a good example of how a standard library should be written.
+
+* Where these ideas come from?
+- I want to let the language work for me and protect me
+- Every other language has patterns, Go isn't special because it's young
+- Maintainability, simplicity, and defined patterns equals speed and reliability
+- The desire to experiment in the safety of a non-production codebase
+
+* Don't patterns just emerge from code?
+Patterns can be seen in code, but you need to be actively looking.
+
+Many patterns might be hidden under the code required by necessity to meet a deadline. Going back to think about those potential patterns in a _different_ context to see if they apply in more than one situation is a great exercise.
+
+Developing patterns is hardwork, but worth the energy. If you don't believe that write an author of a patterns book and ask them.
