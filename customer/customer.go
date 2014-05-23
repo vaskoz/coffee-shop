@@ -1,13 +1,13 @@
 package customer
 
 import (
+	"fmt"
 	"github.com/vaskoz/coffee-shop/order"
-  "fmt"
 )
 
 type Customer interface {
 	PlaceOrder() order.Order
-  EnjoyBeverage(order.Order, interface{}) string
+	EnjoyBeverage(order.Order, interface{}) string
 	Id() int
 }
 
@@ -24,11 +24,11 @@ func (c *customer) Id() int {
 }
 
 func (c *customer) EnjoyBeverage(order order.Order, provider interface{}) string {
-  return fmt.Sprintf("Customer %d says Yum and thanks to %v", c.id, provider)
+	return fmt.Sprintf("Customer %d says Yum and thanks to %v", c.id, provider)
 }
 
 func (c *customer) String() string {
-  return fmt.Sprintf("Customer %d", c.id)
+	return fmt.Sprintf("Customer %d", c.id)
 }
 
 func New(id int) Customer {
@@ -38,7 +38,7 @@ func New(id int) Customer {
 func RandomGroupOf(n int) []Customer {
 	customers := make([]Customer, n)
 	for i := 0; i < n; i++ {
-		customers[i] = New(i+1)
+		customers[i] = New(i + 1)
 	}
 	return customers
 }

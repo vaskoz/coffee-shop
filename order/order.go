@@ -1,7 +1,7 @@
 package order
 
 import (
-  "time"
+	"time"
 )
 
 // PUBLIC INTERFACE
@@ -13,9 +13,10 @@ type Callback func(Order) error
 type Order interface {
 	Type() string
 	Time() time.Duration
-  DeliveryMethod(Callback)
+	DeliveryMethod(Callback)
 	unique()
 }
+
 // STOPIFACE OMIT
 
 // HIDDEN STRUCT IMPLEMENTING INTERFACE
@@ -25,8 +26,9 @@ type Order interface {
 type order struct {
 	taype string
 	time  time.Duration
-  cb Callback
+	cb    Callback
 }
+
 // STOPSTRUCT OMIT
 
 // METHODS
@@ -53,4 +55,5 @@ func (o *order) DeliveryMethod(cb Callback) {
 func New(taype string, time time.Duration) Order {
 	return &order{taype: taype, time: time}
 }
+
 // STOPNEW OMIT
