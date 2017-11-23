@@ -1,4 +1,4 @@
-package order
+package main
 
 import (
 	"time"
@@ -7,13 +7,9 @@ import (
 // PUBLIC INTERFACE
 //
 
-type Callback func(Order) error
-
+// Order represents a customer order
 // STARTIFACE OMIT
 type Order interface {
-	Type() string
-	Time() time.Duration
-	DeliveryMethod(Callback)
 	unique()
 }
 
@@ -26,7 +22,6 @@ type Order interface {
 type order struct {
 	taype string
 	time  time.Duration
-	cb    Callback
 }
 
 // STOPSTRUCT OMIT
@@ -36,23 +31,12 @@ type order struct {
 
 func (o *order) unique() {}
 
-func (o *order) Type() string {
-	return o.taype
-}
-
-func (o *order) Time() time.Duration {
-	return o.time
-}
-
-func (o *order) DeliveryMethod(cb Callback) {
-	o.cb = cb
-}
-
 // PACKAGE FUNCTIONS
 //
 
+// NewOrder creates a new order to be filled
 // STARTNEW OMIT
-func New(taype string, time time.Duration) Order {
+func NewOrder(taype string, time time.Duration) Order {
 	return &order{taype: taype, time: time}
 }
 

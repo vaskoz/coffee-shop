@@ -1,38 +1,68 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/vaskoz/coffee-shop/barista"
-	"github.com/vaskoz/coffee-shop/customer"
-	"github.com/vaskoz/coffee-shop/store"
+	"io"
+	"log"
+	"os"
+	"os/signal"
+	"strconv"
+	"syscall"
 	"time"
 )
 
-// Purely for CLI purposes, so func main has something to start
-var startCLI = func() {
-	outputChan := make(chan string, 100)
-	s := store.New()
-	s.CloseAfter(20 * time.Second)
-	s.Customers(customer.RandomGroupOf(20))
-	s.Baristas(barista.RandomGroupOf(10))
-	go func() {
-		err := s.Open(outputChan)
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Println("*** Store is closed now ***")
-		}
-	}()
-	for {
-		select {
-		case str := <-outputChan:
-			fmt.Println(str)
-		case <-time.After(5 * time.Second):
-			return
-		}
-	}
-}
+var (
+	stop             = make(chan os.Signal, 1)
+	exit             = os.Exit
+	stderr io.Writer = os.Stderr
+)
 
 func main() {
-	startCLI()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	logger := log.New(stderr, "", log.Lshortfile)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+	closeTime, err := time.ParseDuration(fmt.Sprintf("%ss", os.Getenv("COFFEE_SHOP_CLOSE_TIME")))
+	if err != nil {
+		logger.Println("Bad COFFEE_SHOP_CLOSE_TIME")
+		exit(1)
+		return
+	}
+	shutdown, err := time.ParseDuration(fmt.Sprintf("%ss", os.Getenv("COFFEE_SHOP_SHUTDOWN")))
+	if err != nil {
+		logger.Println("Bad COFFEE_SHOP_SHUTDOWN")
+		exit(1)
+		return
+	}
+	customers, err := strconv.Atoi(os.Getenv("COFFEE_SHOP_CUSTOMERS"))
+	if err != nil {
+		logger.Println("Bad COFFEE_SHOP_CUSTOMERS")
+		exit(1)
+		return
+	}
+	baristas, err := strconv.Atoi(os.Getenv("COFFEE_SHOP_BARISTAS"))
+	if err != nil {
+		logger.Println("Bad COFFEE_SHOP_BARISTAS")
+		exit(1)
+		return
+	}
+	s := NewStore(logger)
+	s.CloseAfter(closeTime)
+	s.Customers(RandomGroupOfCustomers(customers))
+	s.Baristas(RandomGroupOfBaristas(baristas))
+	complete, err := s.Open(ctx)
+	if err != nil {
+		exit(1)
+		return
+	}
+	select {
+	case <-stop:
+		cancel()
+		select {
+		case <-time.After(shutdown):
+		case <-complete:
+		}
+	case <-complete:
+	}
 }
