@@ -2,5 +2,4 @@ language: go
 go:
   - master
 script:
-- go test -cover -v -race
-- go test -bench=. -v -race
+- go test -bench=. -cover -v -race
