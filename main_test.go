@@ -54,12 +54,21 @@ func TestBadEnv(t *testing.T) {
 func TestStore(t *testing.T) {
 	buff := new(bytes.Buffer)
 	stderr = buff
-	exit = func(code int) {}
+	var code int = -1
+	exit = func(c int) {
+		code = c
+	}
 	os.Setenv("COFFEE_SHOP_CLOSE_TIME", "1")
 	os.Setenv("COFFEE_SHOP_SHUTDOWN", "0")
 	os.Setenv("COFFEE_SHOP_CUSTOMERS", "1")
 	os.Setenv("COFFEE_SHOP_BARISTAS", "1")
 	main()
+	if code != 0 {
+		t.Error("Expected 0 exit status")
+	}
+	if s := buff.String(); !strings.Contains(s, "Store is closing") || !strings.Contains(s, "Customer 1 says Yum and thanks to Barista 1") {
+		t.Errorf("Output was not expected got %v", s)
+	}
 }
 
 func TestSignalStore(t *testing.T) {

@@ -65,4 +65,5 @@ func main() {
 		}
 	case <-complete:
 	}
+	exit(0)
 }
