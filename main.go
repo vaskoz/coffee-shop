@@ -63,6 +63,8 @@ func main() {
 		select {
 		case <-time.After(shutdown):
 			logger.Println("Shutdown time reached, closing anyway")
+			exit(0)
+			<-complete
 		case <-complete:
 			logger.Println("Store closed")
 		}
