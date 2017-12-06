@@ -74,14 +74,23 @@ func TestStore(t *testing.T) {
 func TestSignalStore(t *testing.T) {
 	buff := new(bytes.Buffer)
 	stderr = buff
-	exit = func(code int) {}
+	var code int = -1
+	exit = func(c int) {
+		code = c
+	}
 	stop = make(chan os.Signal, 1)
 	os.Setenv("COFFEE_SHOP_CLOSE_TIME", "1")
-	os.Setenv("COFFEE_SHOP_SHUTDOWN", "1")
+	os.Setenv("COFFEE_SHOP_SHUTDOWN", "2")
 	os.Setenv("COFFEE_SHOP_CUSTOMERS", "1")
 	os.Setenv("COFFEE_SHOP_BARISTAS", "1")
 	stop <- syscall.SIGINT
 	main()
+	if code != 0 {
+		t.Error("Expected 0 exit code")
+	}
+	if s := buff.String(); !strings.Contains(s, "I received a signal to close the store") || !strings.Contains(s, "Store closed") {
+		t.Error("Expected a store to close with all customers served")
+	}
 }
 
 func TestCantOpenStore(t *testing.T) {

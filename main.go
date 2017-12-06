@@ -58,12 +58,16 @@ func main() {
 	}
 	select {
 	case <-stop:
+		logger.Println("I received a signal to close the store")
 		cancel()
 		select {
 		case <-time.After(shutdown):
+			logger.Println("Shutdown time reached, closing anyway")
 		case <-complete:
+			logger.Println("Store closed")
 		}
 	case <-complete:
+		logger.Println("Store closed")
 	}
 	exit(0)
 }
