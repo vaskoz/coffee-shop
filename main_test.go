@@ -54,7 +54,7 @@ func TestBadEnv(t *testing.T) {
 func TestStore(t *testing.T) {
 	buff := new(bytes.Buffer)
 	stderr = buff
-	var code int = -1
+	code := -1
 	exit = func(c int) {
 		code = c
 	}
@@ -74,7 +74,7 @@ func TestStore(t *testing.T) {
 func TestSignalStore(t *testing.T) {
 	buff := new(bytes.Buffer)
 	stderr = buff
-	var code int = -1
+	code := -1
 	exit = func(c int) {
 		code = c
 	}
@@ -96,7 +96,7 @@ func TestSignalStore(t *testing.T) {
 func TestSignalStoreShutdownTimeout(t *testing.T) {
 	buff := new(bytes.Buffer)
 	stderr = buff
-	var code int = -1
+	code := -1
 	exit = func(c int) {
 		code = c
 	}
