@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/vaskoz/coffee-shop.svg?branch=master)](https://travis-ci.org/vaskoz/coffee-shop)
+[![Coverage Status](https://coveralls.io/repos/github/vaskoz/coffee-shop/badge.svg?branch=master)](https://coveralls.io/github/vaskoz/coffee-shop?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/vaskoz/coffee-shop)](https://goreportcard.com/report/github.com/vaskoz/coffee-shop)
 [![GoDoc](https://godoc.org/github.com/vaskoz/coffee-shop?status.svg)](https://godoc.org/github.com/vaskoz/coffee-shop)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.txt)
