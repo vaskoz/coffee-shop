@@ -102,7 +102,7 @@ func TestSignalStoreShutdownTimeout(t *testing.T) {
 	}
 	stop = make(chan os.Signal, 1)
 	os.Setenv("COFFEE_SHOP_CLOSE_TIME", "1")
-	os.Setenv("COFFEE_SHOP_SHUTDOWN", "1")
+	os.Setenv("COFFEE_SHOP_SHUTDOWN", "0")
 	os.Setenv("COFFEE_SHOP_CUSTOMERS", "1")
 	os.Setenv("COFFEE_SHOP_BARISTAS", "1")
 	stop <- syscall.SIGINT
