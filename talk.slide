@@ -76,23 +76,23 @@ But will have to deal with a lot of customers and limited baristas, so we'll get
 * Pattern: Code layout
 Advantage: Easy for developers to scan file for relevant information
 
-.code order/order.go
+.code order.go
 
 * Pattern: Interfaces
 You'll notice all the code only exports Interfaces. This provides maximum flexibility.
 
-.code order/order.go /STARTIFACE/,/STOPIFACE/
+.code order.go /STARTIFACE/,/STOPIFACE/
 
 Notice that all exports in packages are interfaces or package functions.
 
-.code order/order.go /STARTNEW/,/STOPNEW/
+.code order.go /STARTNEW/,/STOPNEW/
 
 Virtually all presenters at GopherCon agree with the nebulous idea of "relying on interfaces"
 
 * Pattern: Package Unique Interfaces
 Notice the 'unique' unexported method in the interface. Why's that there?
 
-.code order/order.go /STARTIFACE/,/STOPIFACE/
+.code order.go /STARTIFACE/,/STOPIFACE/
 
 Learned this from one of the Golang creators at GopherCon 2014.
 
@@ -103,7 +103,7 @@ Why should we want this? Safety. Example: if we provide a collection of possible
 Usually this is prevented in a very manual, error prone and verbose way by using interface type assertions to guarantee a certain type.
 
 * Pattern: Hide types that implement interfaces
-.code order/order.go /STARTSTRUCT/,/STOPSTRUCT/
+.code order.go /STARTSTRUCT/,/STOPSTRUCT/
 
 Lowercase the type name of structs that implement interfaces, because the data and behavior should be accessible thru the interface alone.
 
