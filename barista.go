@@ -27,7 +27,7 @@ func (b *barista) String() string {
 
 // NewBarista creates a new Barista
 var NewBarista = func(id int) Barista {
-	return &barista{id: id, speed: 5}
+	return &barista{id: id, speed: 15}
 }
 
 // RandomGroupOfBaristas creates a random group of baristas
