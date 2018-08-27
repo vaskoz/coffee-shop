@@ -10,7 +10,7 @@ import (
 // Order represents a customer order
 // STARTIFACE OMIT
 type Order interface {
-	unique()
+	//unique()
 }
 
 // STOPIFACE OMIT
@@ -29,7 +29,7 @@ type order struct {
 // METHODS
 //
 
-func (o *order) unique() {}
+//func (o *order) unique() {}
 
 // PACKAGE FUNCTIONS
 //

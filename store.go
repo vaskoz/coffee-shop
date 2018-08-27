@@ -17,7 +17,7 @@ type Store interface {
 	CloseAfter(time time.Duration)
 	Customers([]Customer)
 	Baristas([]Barista)
-	isUnique()
+	//isUnique()
 }
 
 // HIDDEN STRUCTS THAT IMPLEMENT INTERFACES
@@ -38,7 +38,7 @@ type store struct {
 // METHODS
 //
 
-func (s *store) isUnique() {}
+//func (s *store) isUnique() {}
 
 func (s *store) Open(ctx context.Context) (<-chan struct{}, error) {
 	if s.openTime == 0 || len(s.customers) == 0 || len(s.baristas) == 0 {
