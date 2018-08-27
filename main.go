@@ -56,6 +56,7 @@ func main() {
 		exit(1)
 		return
 	}
+	time.Sleep(1 * time.Second)
 	select {
 	case <-stop:
 		logger.Println("I received a signal to close the store")
