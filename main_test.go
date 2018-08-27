@@ -79,8 +79,8 @@ func TestSignalStore(t *testing.T) {
 		code = c
 	}
 	stop = make(chan os.Signal, 1)
-	os.Setenv("COFFEE_SHOP_CLOSE_TIME", "1")
-	os.Setenv("COFFEE_SHOP_SHUTDOWN", "2")
+	os.Setenv("COFFEE_SHOP_CLOSE_TIME", "100")
+	os.Setenv("COFFEE_SHOP_SHUTDOWN", "90")
 	os.Setenv("COFFEE_SHOP_CUSTOMERS", "1")
 	os.Setenv("COFFEE_SHOP_BARISTAS", "1")
 	stop <- syscall.SIGINT
@@ -101,7 +101,7 @@ func TestSignalStoreShutdownTimeout(t *testing.T) {
 		code = c
 	}
 	stop = make(chan os.Signal, 1)
-	os.Setenv("COFFEE_SHOP_CLOSE_TIME", "1")
+	os.Setenv("COFFEE_SHOP_CLOSE_TIME", "100")
 	os.Setenv("COFFEE_SHOP_SHUTDOWN", "0")
 	os.Setenv("COFFEE_SHOP_CUSTOMERS", "1")
 	os.Setenv("COFFEE_SHOP_BARISTAS", "1")
