@@ -118,10 +118,16 @@ func TestSignalStoreShutdownTimeout(t *testing.T) {
 func TestCantOpenStore(t *testing.T) {
 	buff := new(bytes.Buffer)
 	stderr = buff
-	exit = func(code int) {}
+	var exitCode int
+	exit = func(code int) {
+		exitCode = code
+	}
 	os.Setenv("COFFEE_SHOP_CLOSE_TIME", "0")
 	os.Setenv("COFFEE_SHOP_SHUTDOWN", "0")
 	os.Setenv("COFFEE_SHOP_CUSTOMERS", "0")
 	os.Setenv("COFFEE_SHOP_BARISTAS", "0")
 	main()
+	if exitCode != 1 {
+		t.Errorf("Expected an exitCode of 1, but got %v", exitCode)
+	}
 }
