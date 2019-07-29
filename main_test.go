@@ -66,7 +66,8 @@ func TestStore(t *testing.T) {
 	if code != 0 {
 		t.Error("Expected 0 exit status")
 	}
-	if s := buff.String(); !strings.Contains(s, "Store is closing") || !strings.Contains(s, "Customer 1 says Yum and thanks to Barista 1") {
+	if s := buff.String(); !strings.Contains(s, "Store is closing") ||
+		!strings.Contains(s, "Customer 1 says Yum and thanks to Barista 1") {
 		t.Errorf("Output was not expected got %v", s)
 	}
 }
@@ -88,7 +89,8 @@ func TestSignalStore(t *testing.T) {
 	if code != 0 {
 		t.Error("Expected 0 exit code")
 	}
-	if s := buff.String(); !strings.Contains(s, "I received a signal to close the store") || !strings.Contains(s, "Store closed") {
+	if s := buff.String(); !strings.Contains(s, "I received a signal to close the store") ||
+		!strings.Contains(s, "Store closed") {
 		t.Error("Expected a store to close with all customers served")
 	}
 }
@@ -110,7 +112,8 @@ func TestSignalStoreShutdownTimeout(t *testing.T) {
 	if code != 0 {
 		t.Error("Expected 0 exit code")
 	}
-	if s := buff.String(); !strings.Contains(s, "I received a signal to close the store") || !strings.Contains(s, "Shutdown time reached") {
+	if s := buff.String(); !strings.Contains(s, "I received a signal to close the store") ||
+		!strings.Contains(s, "Shutdown time reached") {
 		t.Error("Expected a store to close with all customers served")
 	}
 }
