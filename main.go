@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+// nolint
 var (
 	stop             = make(chan os.Signal, 1)
 	exit             = os.Exit
