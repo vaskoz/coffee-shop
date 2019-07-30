@@ -59,3 +59,26 @@ coffee in the shop.
 
 `COFFEE_SHOP_BARISTAS=2` indicates the number of baristas working on
 making drinks. Each barista can only make one drink at a time.
+
+Testing:
+========
+You can run the tests with this command:
+```
+go test -cover -race -v
+=== RUN   TestBadEnv
+--- PASS: TestBadEnv (0.00s)
+=== RUN   TestStore
+--- PASS: TestStore (1.00s)
+=== RUN   TestSignalStore
+--- PASS: TestSignalStore (1.01s)
+=== RUN   TestSignalStoreShutdownTimeout
+--- PASS: TestSignalStoreShutdownTimeout (2.01s)
+=== RUN   TestCantOpenStore
+--- PASS: TestCantOpenStore (0.00s)
+PASS
+coverage: 100.0% of statements
+ok  	_/Users/vasko/code/coffee-shop	5.037s
+```
+
+The tests are run by calling `func main` to test the entire functionality of
+the program end-to-end.
