@@ -24,27 +24,27 @@ func main() {
 	defer cancel()
 	logger := log.New(stderr, "", log.Lshortfile)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+	var errorCnt int
 	closeTime, err := time.ParseDuration(fmt.Sprintf("%ss", os.Getenv("COFFEE_SHOP_CLOSE_TIME")))
 	if err != nil {
-		logger.Println("Bad COFFEE_SHOP_CLOSE_TIME")
-		exit(1)
-		return
+		logger.Println("please specify number, in seconds, for envvar COFFEE_SHOP_CLOSE_TIME")
+		errorCnt++
 	}
 	shutdown, err := time.ParseDuration(fmt.Sprintf("%ss", os.Getenv("COFFEE_SHOP_SHUTDOWN")))
 	if err != nil {
-		logger.Println("Bad COFFEE_SHOP_SHUTDOWN")
-		exit(1)
-		return
+		logger.Println("please specify number, in seconds, for envvar COFFEE_SHOP_SHUTDOWN")
+		errorCnt++
 	}
 	customers, err := strconv.Atoi(os.Getenv("COFFEE_SHOP_CUSTOMERS"))
 	if err != nil {
-		logger.Println("Bad COFFEE_SHOP_CUSTOMERS")
-		exit(1)
-		return
+		logger.Println("please specify number of customers for envvar COFFEE_SHOP_CUSTOMERS")
+		errorCnt++
 	}
 	baristas, err := strconv.Atoi(os.Getenv("COFFEE_SHOP_BARISTAS"))
 	if err != nil {
-		logger.Println("Bad COFFEE_SHOP_BARISTAS")
+		logger.Println("please specify number of baristas for envvar COFFEE_SHOP_BARISTAS")
+	}
+	if errorCnt != 0 {
 		exit(1)
 		return
 	}

@@ -19,7 +19,7 @@ func TestBadEnv(t *testing.T) {
 	if code != 1 {
 		t.Error("expected exit status 1")
 	}
-	if !strings.Contains(buff.String(), "Bad COFFEE_SHOP_CLOSE_TIME") {
+	if !strings.Contains(buff.String(), "COFFEE_SHOP_CLOSE_TIME") {
 		t.Error("Didn't provide close time, but didn't error")
 	}
 	code = 0
@@ -28,7 +28,7 @@ func TestBadEnv(t *testing.T) {
 	if code != 1 {
 		t.Error("expected exit status 1")
 	}
-	if !strings.Contains(buff.String(), "Bad COFFEE_SHOP_SHUTDOWN") {
+	if !strings.Contains(buff.String(), "COFFEE_SHOP_SHUTDOWN") {
 		t.Error("Didn't provide shutdown time, but didn't error")
 	}
 	code = 0
@@ -37,7 +37,7 @@ func TestBadEnv(t *testing.T) {
 	if code != 1 {
 		t.Error("expected exit status 1")
 	}
-	if !strings.Contains(buff.String(), "Bad COFFEE_SHOP_CUSTOMERS") {
+	if !strings.Contains(buff.String(), "COFFEE_SHOP_CUSTOMERS") {
 		t.Error("Didn't provide number of customers, but didn't error")
 	}
 	code = 0
@@ -46,7 +46,7 @@ func TestBadEnv(t *testing.T) {
 	if code != 1 {
 		t.Error("expected exit status 1")
 	}
-	if !strings.Contains(buff.String(), "Bad COFFEE_SHOP_BARISTAS") {
+	if !strings.Contains(buff.String(), "COFFEE_SHOP_BARISTAS") {
 		t.Error("Didn't provide number of baristas, but didn't error")
 	}
 }
