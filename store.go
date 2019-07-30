@@ -42,7 +42,7 @@ type store struct {
 
 func (s *store) Open(ctx context.Context) (<-chan struct{}, error) {
 	if s.openTime == 0 || len(s.customers) == 0 || len(s.baristas) == 0 {
-		return nil, errors.New("Can't open store. Not configured properly")
+		return nil, errors.New("can't open store. not configured properly")
 	}
 	ctx, cancel := context.WithTimeout(ctx, s.openTime)
 	var wg sync.WaitGroup

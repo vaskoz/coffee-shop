@@ -26,12 +26,12 @@ func (b *barista) String() string {
 }
 
 // NewBarista creates a new Barista
-var NewBarista = func(id int) Barista {
+func NewBarista(id int) Barista {
 	return &barista{id: id, speed: 15}
 }
 
 // RandomGroupOfBaristas creates a random group of baristas
-var RandomGroupOfBaristas = func(n int) []Barista {
+func RandomGroupOfBaristas(n int) []Barista {
 	baristas := make([]Barista, n)
 	for i := 0; i < n; i++ {
 		baristas[i] = NewBarista(i + 1)
