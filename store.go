@@ -44,9 +44,12 @@ func (s *store) Open(ctx context.Context) (<-chan struct{}, error) {
 	if s.openTime == 0 || len(s.customers) == 0 || len(s.baristas) == 0 {
 		return nil, errors.New("can't open store. not configured properly")
 	}
+
 	ctx, cancel := context.WithTimeout(ctx, s.openTime)
-	var wg sync.WaitGroup
 	done := make(chan struct{}, 1)
+
+	var wg sync.WaitGroup
+
 	go func() {
 		for {
 			select {
@@ -55,20 +58,25 @@ func (s *store) Open(ctx context.Context) (<-chan struct{}, error) {
 				wg.Wait()
 				cancel()
 				done <- struct{}{}
+
 				return
 			case c := <-s.customerQueue:
 				b := <-s.baristaQueue
+
 				wg.Add(1)
+
 				go func() {
 					o := b.MakeOrder(c.PlaceOrder())
 					s.baristaQueue <- b
 					s.logger.Println(c.EnjoyBeverage(o, b))
 					s.customerQueue <- c
+
 					wg.Done()
 				}()
 			}
 		}
 	}()
+
 	return done, nil
 }
 
@@ -79,6 +87,7 @@ func (s *store) CloseAfter(time time.Duration) {
 func (s *store) Customers(customers []Customer) {
 	s.customers = customers
 	s.customerQueue = make(chan Customer, len(customers)+1)
+
 	for _, c := range s.customers {
 		s.customerQueue <- c
 	}
@@ -87,6 +96,7 @@ func (s *store) Customers(customers []Customer) {
 func (s *store) Baristas(baristas []Barista) {
 	s.baristas = baristas
 	s.baristaQueue = make(chan Barista, len(baristas)+1)
+
 	for _, b := range s.baristas {
 		s.baristaQueue <- b
 	}

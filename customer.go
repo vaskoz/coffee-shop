@@ -35,5 +35,6 @@ func RandomGroupOfCustomers(n int) []Customer {
 	for i := 0; i < n; i++ {
 		customers[i] = NewCustomer(i + 1)
 	}
+
 	return customers
 }

@@ -36,5 +36,6 @@ func RandomGroupOfBaristas(n int) []Barista {
 	for i := 0; i < n; i++ {
 		baristas[i] = NewBarista(i + 1)
 	}
+
 	return baristas
 }
